@@ -1,0 +1,52 @@
+http://masm32.com/board/index.php?topic=7608.msg83084#msg83084
+; to build: uasm64 -bin -Fo mystub.bin mystub.asm
+
+    .386
+    option casemap:none
+
+IMAGE_DOS_HEADER	struct
+e_magic		WORD	?
+e_cblp		WORD	?
+e_cp		WORD	?
+e_crlc		WORD	?
+e_cparhdr	WORD	?
+e_minalloc	WORD	?
+e_maxalloc	WORD	?
+e_ss		WORD	?
+e_sp		WORD	?
+e_csum		WORD	?
+e_ip		WORD	?
+e_cs		WORD	?
+e_lfarlc	WORD	?
+e_ovno		WORD	?
+e_res		WORD 4 dup (?)
+e_oemid		WORD	?
+e_oeminfo	WORD	?
+e_res2		WORD 10 dup (?)
+e_lfanew	SDWORD	?
+IMAGE_DOS_HEADER	ends	
+
+IMAGEBASE equ 400000h
+
+PEHDR segment dword FLAT
+
+;--- define the DOS "MZ" header
+
+    ORG IMAGEBASE
+
+    IMAGE_DOS_HEADER <"ZM", 90h, 3, 0,4,0,0ffffh,0,0b8h,0,0,0,40h,0,<0>,0,0,<0>,IMAGEREL PEHdr>
+
+    db 0Eh         ;push cs
+    db 1Fh         ;pop ds
+    db 0BAh,0Eh,0  ;mov dx,text
+    db 0B4h,09h    ;mov ah,9
+    db 0CDh,21h    ;int 21h
+    db 0B8h,01h,4Ch;mov ax,4c01h
+    db 0CDh,21h    ;int 21h
+    db "My custom-made DOS stub",13,10,'$'
+   
+	
+PEHdr label byte
+ORG PEHdr
+
+PEHDR ends
