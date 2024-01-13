@@ -1,8 +1,9 @@
 @echo off
-rem set PATH=C:\masm32\bin
+set MASM=C:\devtools\assembler\masm32
+rem set MASM=C:\masm32
 rem /c for compile only
-C:\masm32\bin\ml.exe /c /Cp /coff Hello.asm && ^
-C:\masm32\bin\link.exe /subsystem:console ^
+%MASM%\bin\ml.exe /c /Cp /coff Hello.asm && ^
+%MASM%\bin\link.exe /subsystem:console,4.0 ^
     /map:Hello.map ^
     /stub:..\dos\Hello.exe ^
-    Hello.obj C:\masm32\lib\kernel32.lib
+    Hello.obj %MASM%\lib\kernel32.lib
