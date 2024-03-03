@@ -21,7 +21,7 @@ messageLen = ($ - message) / 2
 main proc
     ; Reserve space for QWORD bytes return value
     ; of WriteFile
-    sub     rsp, 10h         ; Allocate 16 bytes intead of 8
+    sub     rsp, 18h         ; Allocate 16+8 bytes intead of 8
     mov     rbx, rsp         ; to keep stack pointer 16-byte aligned
     
     ; Allocate shadow space for function calls
@@ -58,6 +58,6 @@ exit:
     ; ExitProcess(0)
     xor     rcx, rcx
     call    ExitProcess
-main endp 
+main endp
 
 end
