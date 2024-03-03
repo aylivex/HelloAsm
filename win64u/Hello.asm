@@ -31,10 +31,13 @@ main proc
     mov     rcx, -11
     call    GetStdHandle
 
+    mov     r12, rax        ; Save the handle for further use
+
     ; WriteConsole(hstdOut, message, length(message), &bytes, 0);
-    mov     rcx, rax                    ; hstdOut - 1st argument
+    mov     rcx, r12                    ; hstdOut - 1st argument
     mov     rdx, offset message         ; message - 2nd argument
     mov     r8,  messageLen             ; msg Len - 3rd argument
+                                        ; (in characters)
     mov     r9,  rbx                    ; &bytes  - 4th argument
     mov     qword ptr [rsp + 20h], 0    ; NULL for 5th parameter
     call    WriteConsoleW
@@ -43,9 +46,10 @@ main proc
     jnz     exit                        ; Succeeded -> exit
 
     ; WriteConsole failed, use WriteFile instead
-    mov     rcx, rax                    ; hstdOut - 1st argument
+    mov     rcx, r12                    ; hstdOut - 1st argument
     mov     rdx, offset message         ; message - 2nd argument
     mov     r8,  messageLen             ; msg Len - 3rd argument
+    shl     r8,  1                      ; (in bytes = chars * 2)
     mov     r9,  rbx                    ; &bytes  - 4th argument
     mov     qword ptr [rsp + 20h], 0    ; NULL for 5th parameter
     call    WriteFile
