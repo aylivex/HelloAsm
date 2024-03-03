@@ -20,7 +20,6 @@ _main:
     ; hStdOut = GetstdHandle( STD_OUTPUT_HANDLE)
     push    -11
     call    _GetStdHandle@4
-    mov     ebx, eax    
 
     ; Reserve space for DWORD bytes
     sub     esp, 4
