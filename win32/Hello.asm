@@ -11,28 +11,27 @@
 .const
 
 message db 'Hello from Win32', 13, 10,
-;           'Привет из Win32', 13, 10
+;           'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Win32', 13, 10
 messageLen = $ - message
 
 .code
 
 _main:
-    ; DWORD  bytes;    
-    mov     ebp, esp
-    sub     esp, 4
-
     ; hStdOut = GetstdHandle( STD_OUTPUT_HANDLE)
     push    -11
     call    _GetStdHandle@4
     mov     ebx, eax    
 
+    ; Reserve space for DWORD bytes
+    sub     esp, 4
+    mov     ebx, esp
+
     ; WriteFile( hstdOut, message, length(message), &bytes, 0);
     push    0
-    lea     eax, [ebp-4]
-    push    eax
+    push    ebx
     push    messageLen
     push    offset message
-    push    ebx
+    push    eax
     call    _WriteFile@20
 
     ; ExitProcess(0)

@@ -28,9 +28,10 @@ start:
     push    -11
     call    [GetStdHandle]
 
-    ; Reserve space for DWORD  bytes;    
+    ; Reserve space for DWORD bytes
     sub     esp, 4
     mov     ebx, esp
+
     ; WriteFile(hStdOut, message, length(message), &bytes, 0);
     push    0
     push    ebx
